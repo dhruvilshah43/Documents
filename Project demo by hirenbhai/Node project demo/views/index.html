@@ -1,0 +1,47 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Express App</title>
+</head>
+
+<body>
+    <h1>Welcome to Express App</h1>
+    <p id="httpStatus">HTTP Connected</p>
+    <p id="socketStatus"></p>
+    <p id="mongoStatus"></p>
+    <p id="redisStatus"></p>
+    <p id="amqpStatus"></p>
+</body>
+<script src="./js/socket.io.js"></script>
+<script>
+    BASE_URL = '<%= BASE_URL %>'
+    console.log("BASE_URL : ", BASE_URL)
+    if (BASE_URL.split(':')[2] == 'undefined/') {
+        console.log("window.location.href : ", window.location.href)
+        BASE_URL = window.location.href;
+    }
+    var socket = io.connect(BASE_URL);
+
+    socket.on('connect', () => {
+        console.log('Socket connected successfully');
+        document.getElementById("socketStatus").innerHTML = "Socket Connected"
+        socket.emit('connectionStatus', function (status) {
+            console.log("status : ", status);
+            let { mongoConnected, redisConnected, amqpConnected } = status;
+            document.getElementById("mongoStatus").innerHTML = mongoConnected ? "Mongo Connected" : "Mongo Not Connected"
+            document.getElementById("redisStatus").innerHTML = redisConnected ? "Redis Connected" : "Redis Not Connected"
+            document.getElementById("amqpStatus").innerHTML = amqpConnected ? "AMQP Connected" : "AMQP Not Connected"
+        })
+
+        socket.on('res', async (data) => {
+            console.log(data)
+        })
+    });
+
+    socket.on('error', (error) => {
+        console.log('Socket error : ', error);
+    });
+</script>
+
+</html>

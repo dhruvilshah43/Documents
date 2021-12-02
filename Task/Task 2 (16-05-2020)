@@ -1,0 +1,130 @@
+Task: 2
+
+1) Apache installation
+
+enable rewrite
+.htaccess
+create 2 virtual host (wordpress and codeignitor)
+2) installation specific version of php (5.6 , 7.3 )
+        
+check how switch php version
+
+check how to use multiple version of php
+3) installation of mysql
+
+complete secure installation
+
+install php my admin and enable htpasswd
+create database and user for that specific database (study permissions)
+4) study about SSL certificate
+
+free SSL study
+6) installation Nginx
+
+change service port to 8080
+
+creating vhost
+5) Reverse proxy
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+--> install Apache:
+  command: 
+    - sudo apt-get update
+    - sudo apt-get install apache2 -y
+
+  --> Enabling mod_rewrite:
+    - sudo a2enmod rewrite
+    - sudo systemctl restart apache2
+
+  --> .htacess file create:
+     - RewriteEngine On 
+       RewriteBase /
+
+       RewriteRule ^index.html$ - [L]
+       RewriteCond %{REQUEST_FILENAME} !-f
+
+       RewriteCond %{REQUEST_FILENAME} !-d
+
+       RewriteRule . /index.html [L]  
+
+--> install mysql-server and Phpmyadmin:
+  Link: https://www.ostechnix.com/install-phpmyadmin-with-lamp-stack-on-ubuntu-18-04-lts/
+  command:
+    - sudo apt-get update
+    - sudo apt-get install mysql-server -y
+    - sudo apt install phpmyadmin php-mbstring php-gettext
+    - sudo phpenmod mbstring
+    - sudo systemctl restart apache2
+  --> how to secure the phpmyadmin:
+    - sudo nano /etc/apache2/conf-available/phpmyadmin.conf
+      add the line: AllowOverride All
+    - sudo systemctl restart apache2
+    - sudo nano /usr/share/phpmyadmin/.htaccess
+      add the line: AuthType Basic
+                    AuthName "Restricted Files"
+                    AuthUserFile /etc/phpmyadmin/.htpasswd
+                    Require valid-user   
+
+    - sudo htpasswd -c /etc/phpmyadmin/.htpasswd 'username' then enter the password
+
+  --> Install specific php version 5.6 and 7.3:
+
+    - sudo apt-get install python-software-properties
+      sudo apt-get install software-properties-common
+      sudo add-apt-repository ppa:ondrej/php
+      sudo apt-get update
+      sudo apt-get install -y php5.6
+      
+    - sudo apt-get install python-software-properties
+      sudo add-apt-repository ppa:ondrej/php
+      sudo apt-get update
+      sudo apt-get install -y php7.3  
+
+    --> how switch php version:
+
+       - sudo a2dismod php5.6 $ a2enmod php7.3
+         sudo service apache2 restart
+         sudo update-alternatives --set php /usr/bin/php7.3
+
+    --> Wordpress installation:
+    Link: https://linuxconfig.org/how-to-install-wordpress-on-ubuntu-18-04-bionic-beaver-linux
+          https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-lamp-on-ubuntu-18-04
+
+    --> codeigniter install:          
+    Link: https://www.howtoforge.com/tutorial/ubuntu-codeigniter/
+
+    --> Changing Nginx Port Number:
+      - sudo nano /etc/nginx/sites-available/default 
+         edit: server {
+                        listen 8080 default_server;
+                        listen [::]:8080 default_server;
+      - sudo systemctl restart nginx.service
+
+    --> nginx virtual host create:
+       Link: https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04 
+
+--> Reverse proxy:
+  Link: https://www.scaleway.com/en/docs/how-to-configure-nginx-reverse-proxy/
+        https://www.digitalocean.com/community/tutorials/how-to-use-apache-http-server-as-reverse-proxy-using-mod_proxy-extension
+        
+
+    - create a file this location /etc/nginx/sites-available 
+      vim reverse-proxy.conf     then enter the line
+
+              server {
+                listen 8080;
+                listen [::]:8080;
+
+                access_log /var/log/nginx/reverse-access.log;
+                error_log /var/log/nginx/reverse-error.log;
+
+                location / {
+                            proxy_pass http://wordpress:80;
+          }
+        }
+
+then add this line (127.0.0.1 wordpress) in server hosts file(sudo vim /etc/hosts)
+
+
+

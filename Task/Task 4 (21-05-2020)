@@ -1,0 +1,21 @@
+IAM Roles:
+  - IAM role is an IAM identity that you can create in your account that has specific permissions.
+  - IAM role is similar to an IAM user, in that it is an AWS identity with permission policies that determine what the identity can and cannot do in AWS.
+  - However, instead of being uniquely associated with one person.
+  - IAM identity that you can create in your account that has specific permissions.
+  - Roles can be used by the following:
+
+    An IAM user in the same AWS account as the role
+    An IAM user in a different AWS account than the role
+    A web service offered by AWS such as Amazon Elastic Compute Cloud (Amazon EC2)
+    An external user authenticated by an external identity provider (IdP) service that is compatible with SAML 2.0 or OpenID Connect, or a custom-built identity broker.
+  - IAM allows you to manage users and their level of access to the AWS console
+  - Centralised control your AWS account
+  - Shared access to your AWS account.
+  - granular permission.
+  - identity fedration.
+  - Multifactor authentication.
+  - provide temporry access to user and services,
+  - allow you to set up your own password rotation policy
+
+  

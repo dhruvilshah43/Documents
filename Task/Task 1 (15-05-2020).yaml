@@ -1,0 +1,131 @@
+TASK 1:
+Task summary:
+
+1) Installation Ubuntu -server 18.04
+
+set static ip
+set up root user password
+set up key based authentication
+2) Install Nodejs 10.13
+3) Install Mongdb 4.0
+
+setup admin user
+
+setup database user with access of specific database only
+enable security
+4) Installation Redis
+
+setup password and set number of database to 20
+5) Installation Rabbitmq-server
+
+enable management GUI
+
+enable guest user to be access using management gui
+6) based on above setup
+
+give list of open port in AWS security group
+
+Write Documentation on above setup
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+- set up root user password:
+  command: passwd
+  
+- install the Node js
+  - sudo apt install curl
+  - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+  - sudo apt install nodejs -y
+  
+- install Mongo DB
+   commands:
+    Link: https://linuxize.com/post/how-to-install-mongodb-on-ubuntu-18-04/
+   
+   - wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+   - echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+   - sudo apt update
+   - sudo apt install -y mongodb-org
+   - sudo systemctl enable --now mongod
+   - mongo
+   - use admin
+   -  db.createUser({user:"test", pwd:"test123", roles:[{role:"root", db:"admin"}]})
+   - db.createUser({user:"mongoAdmin",pwd:"changeMe",roles:[{role:"userAdminAnyDatabase",db:"admin"}]})
+   
+- install redise:
+  Note:
+     - redis is an opensource,BSD licensed,Advance key-value store.
+     - an in-memory key-value store,with persistence.
+     - written in c
+     - NoSQL database
+     - Redis stands for Remote Dictionary server.
+     - it is database service.
+     - in-memory storage and database can use fast
+     - 16 database limite store.
+
+  commands:
+  Link: https://tecadmin.net/install-redis-ubuntu/
+  
+   - sudo apt-get update
+   - sudo apt-get install redis-server
+   - sudo systemctl enable redis-server.service
+   - sudo vim /etc/redis/redis.conf
+       maxmemory 256mb
+	     maxmemory-policy allkeys-lru
+   - sudo systemctl restart redis-server.service
+   - sudo apt-get install php-redis
+   
+  --> set password in redies server.
+  Link: https://www.digitalocean.com/community/tutorials/how-to-secure-your-redis-installation-on-ubuntu-18-04
+  
+	 - sudo nano /etc/redis/redis.conf
+       # requirepass foobared (Uncomment it by removing the #, and change foobared to a secure password.)
+     - openssl rand 60 | openssl base64 -A (output- yxRc00LeNQ9ms4Vtn/dmgFWlqrVEo4vRPZ91y5GBdjUhGRUrxfT8A1nk4sRUVdWTxy7jcTg3O2Z7l2En)	
+	 - sudo nano /etc/redis/redis.conf
+	   requirepass yxRc00LeNQ9ms4Vtn/dmgFWlqrVEo4vRPZ91y5GBdjUhGRUrxfT8A1nk4sRUVdWTxy7jcTg3O2Z7l2En
+	 - sudo systemctl restart redis.service  
+	 
+  --> increse database in redis:
+  Link: https://www.digitalocean.com/community/cheatsheets/how-to-manage-redis-databases-and-keys  
+	 
+	 
+	 
+- Install RabbitMQ on Ubuntu:
+
+Note: 
+  - A message broker acts as a middleman for various services (e.g. a web application, as in this example). 
+  - They can be used to reduce loads and delivery times of web application servers by delegating tasks that would normally take up a lot of time or resources to a third party that has no other job.
+  - In this guide, we follow a scenario where a web application allows users to upload information to a website. 
+  - The site will handle this information, generate a PDF, and email it back to the user.
+  - Handling the information, generating the PDF, and sending the email will, in this example case, take several seconds. That is one of the reasons why a message queue will be used to perform the task.
+  
+Link: https://computingforgeeks.com/how-to-install-latest-rabbitmq-server-on-ubuntu-18-04-lts/
+      https://tecadmin.net/install-rabbitmq-server-on-ubuntu/
+ commands: 
+ - echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list
+ - wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -
+ - sudo apt-get update
+ - sudo apt-get install rabbitmq-server
+ - sudo systemctl enable rabbitmq-server
+ - sudo systemctl start rabbitmq-server
+ - sudo systemctl stop rabbitmq-server
+ - sudo rabbitmq-plugins enable rabbitmq_management
+
+URL: http://[server IP|Hostname]:15672
+
+--> User create and set the permission: (bydefault username and password: guest)
+   Commands:
+   - sudo rabbitmqctl add_user admin password
+   - sudo rabbitmqctl set_user_tags admin administrator
+   - sudo rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
+
+--> AWS cli install commands:
+    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    - unzip awscliv2.zip
+    - sudo ./aws/install 
+    - 10  
+
+    --------------------------------------------------------------------------------------------------------------------------------------
+
+    rabbitemq aws link: https://medium.com/@aws_blogs/rabbitmq-with-elastic-load-balancer-and-auto-scaling-groups-41b4eb88423a
+ 
+	 
+	 

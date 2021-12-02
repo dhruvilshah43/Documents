@@ -1,0 +1,44 @@
+https://docs.aws.amazon.com/AmazonS3/latest/user-guide/static-website-hosting.html                             ---static website hosting in s3 bucket
+https://docs.aws.amazon.com/AmazonS3/latest/dev/HostingWebsiteOnS3Setup.html
+https://stackoverflow.com/questions/41498655/s3-bucket-policy-for-hosted-static-website
+
+
+
+
+
+https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-serve-static-website/
+http://kynatro.com/blog/2018/01/03/a-step-by-step-guide-to-creating-a-password-protected-s3-bucket/              ----for the username and password authentication lambda function
+https://aws.amazon.com/premiumsupport/knowledge-center/s3-website-cloudfront-error-403/
+https://hackernoon.com/serverless-password-protecting-a-static-website-in-an-aws-s3-bucket-bfaaa01b8666
+https://www.youtube.com/watch?v=hEdYnN8dnRs      -----cloud distribution mate(cloud front)
+
+
+
+
+
+
+----Bucket policy for cloud front and statice web hosting:
+
+
+{
+    "Version": "2012-10-17",
+    "Id": "Policy1600333364768",
+    "Statement": [
+        {
+            "Sid": "Stmt1600333363057",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:*",
+            "Resource": "arn:aws:s3:::www.brainengine.io/*"
+        },
+        {
+            "Sid": "2",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1OS17P5EDYQL7"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::www.brainengine.io/*"
+        }
+    ]
+}

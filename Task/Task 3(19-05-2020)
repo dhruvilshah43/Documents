@@ -1,0 +1,40 @@
+commands of nodejs:
+  - node server.js
+  - npm install -g forever
+  - forever start server.js
+  - forever list
+                                                              ---- git reset --hard 71fa1b0 --- specific commit leva mate gitlab ma
+--> Mongodb backup and restore:
+Link: https://www.digitalocean.com/community/tutorials/how-to-back-up-restore-and-migrate-a-mongodb-database-on-ubuntu-14-04
+
+backup: 
+   command: 
+     - sudo mkdir /var/backups/mongobackups
+     - sudo mongodump --db 'dbname' --out /var/backups/mongobackups/`date +"%m-%d-%y"`
+restore:
+    command:
+      - sudo mongorestore --db 'dbname' --drop /var/backups/mongobackups/01-20-16/'dbname'/
+
+-------------------------------------------------------------------------------------------------------------------------
+
+- which port use in AWS:
+   - HTTP 80
+   - SSH 22
+   - Coustom tcp 9090(Any port define)
+   - HTTPS 443
+
+-------------------------------------------------------------------------------------------------------------------------
+
+Deployement steps che ema jaya changes karava nu che...
+1) create ALB
+2) change URL in config.json custom.js
+3) update Dockerfile
+4) create repository
+5) create task definition
+6) create service   
+
+
+url change in config.js and views ma coustom.js 
+create task defination
+create docker-comopose file
+changes in Docker file (last command)

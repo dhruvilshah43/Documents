@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"myteam11-rummy.play_track"},{"v":2,"key":{"cd":-1},"name":"cd_-1","ns":"myteam11-rummy.play_track","background":true}],"uuid":"ff1cb1b490cc4156bab9f5f3d729bc15"}
